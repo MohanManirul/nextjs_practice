@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useRef } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+
+const App = () => {
+  let ApiData = useRef(null);
+  let myPtag = useRef();
+
+ const fetchData = async () => {
+    const response = await fetch('https://dummyjson.com/products');
+    ApiData.current = await response.json();
+    console.log(ApiData.current);
+ }
+ 
+ const showData = () => {
+  myPtag.current.innerText = JSON.stringify(ApiData.current);
+ }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="container">
+      <p ref={myPtag}></p>
+      <button className="btn btn-primary" onClick={fetchData}>Click Me!</button>
+      <button className="btn btn-warning" onClick={showData}>Show Data</button>
+    </div>
+  );
+};
 
-export default App
+export default App;
